@@ -21,7 +21,7 @@ function getComputerChoice() {
 function playRound(playerSelection, computerSelection) {
     const player = playerSelection.toLowerCase();
 
-    if (playerSelection === computerSelection.toLowerCase()) {
+    if (player === computerSelection.toLowerCase()) {
         return "It's a tie, you guys choose same";
     } else if (player === 'rock' && computerSelection === 'scissors') {
         return "You Win! Rock beats Scissors";
@@ -47,7 +47,8 @@ function game() {
     let playerscore = 0;
     let computerscore = 0;
     
-    for (let i = 0; i < 5; i++) {
+    while (playerscore < 5 && computerscore < 5) {
+        
         const playerSelection = prompt("Enter your choice: Rock, Paper, or Scissors");
         const computerSelection = getComputerChoice();
 
@@ -60,6 +61,12 @@ function game() {
         } else if (result.includes('Lose')) {
             computerscore++;
         }
+        // updating the dom to display the result and running score
+        const resultDisplay = document.getElementById('resultDisplay');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+
+        resultDisplay.textContent = result;
+        scoreDisplay.textContent = `Player: ${playerscore} || Computer: ${computerscore}`;
     }
     /* Determine who win the game after round 5*/
     if (playerscore > computerscore) {
