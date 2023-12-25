@@ -33,9 +33,9 @@ function playRound(playerSelection, computerSelection) {
         return "You lost to computer!"
     }
 }
-const playerSelection = "rock";
-const computerSelection = getComputerChoice();
-console.log(playRound(playerSelection, computerSelection));
+//const playerSelection = "rock";
+//const computerSelection = getComputerChoice();
+//console.log(playRound(playerSelection, computerSelection));
 
 
 /**
@@ -69,12 +69,21 @@ function game() {
         scoreDisplay.textContent = `Player: ${playerscore} || Computer: ${computerscore}`;
     }
     /* Determine who win the game after round 5*/
-    if (playerscore > computerscore) {
-        console.log("congratulations, you win the game");
-    } else if (computerscore > playerscore) {
-        console.log("Sorry, computer win");
+    const winnerDisplay = document.getElementById('winnerDisplay');
+    if (playerscore === 5) {
+        winnerDisplay.textContent = "congratulations, you win the game";
+    } else if (computerscore === 5) {
+        winnerDisplay.textContent = "Sorry, computer wins!";
     } else {
-        console.log("It is a tie, no winner");
+        if (playerscore === computerscore && playerscore >= 1 && playerscore <= 4) {
+            winnerDisplay.textContent = `it's a tie ${playerscore}-${computerscore}`;
+        } else {
+            if (playerscore > computerscore) {
+                winnerDisplay.textContent = `You are leading ${playerscore}-${computerscore}`;
+            } else {
+                winnerDisplay.textContent = `Computer is leading ${playerscore}-${computerscore}`;
+            }
+        }
     }
 }
 
