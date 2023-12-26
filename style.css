@@ -1,0 +1,25 @@
+body {
+    margin: 0%;
+    padding: 0%;
+    flex: 1;
+    font-family: 'Times New Roman', Times, serif;
+    background-image: url('/image/rockgame.jpeg');
+    background-size: cover;
+    background-position: center;
+    height: 800px;
+    
+}
+
+.flex-containter {
+    display: flex;
+    flex-direction: column;
+}
+ header {
+    position: relative;
+    border: 2px solid black;
+    margin: 20px;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #11235A;
+    color: #ccc;
+ }

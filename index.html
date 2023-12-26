@@ -3,18 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Page Title</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div>
-    <button id="rockButton">Rock</button>
-    <button id="paperButton">Paper</button>
-    <button id="scissorsButton">Scissors</button>
-    <button id="restartButton">Restart Game</button>
+  <div class="flex-container">
+    <div class="background-pictures">
+      <header>
+        <div><em>Welcome, it is time for Rock, Scissors, and Paper Game. Let's Play!</em></div>
+      </header>
+      <div>
+        <button id="rockButton">Rock</button>
+        <button id="paperButton">Paper</button>
+        <button id="scissorsButton">Scissors</button>
+        <button id="restartButton">Restart Game</button>
+      </div>
+      <div id="resultDisplay"></div>
+      <div id="scoreDisplay"></div>
+      <div id="winnerDisplay"></div>
+      <script src ="script.js" async></script>
+    </div>
   </div>
-  
-  <div id="resultDisplay"></div>
-  <div id="scoreDisplay"></div>
-  <div id="winnerDisplay"></div>
-  <script src ="script.js" async></script>
 </body>
 </html>
