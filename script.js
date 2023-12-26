@@ -1,106 +1,88 @@
-#!/usr/bin/node
-/**
- * getComputerChoice: a function called getComputerChoice that will
- * randomly return either ‘Rock’, ‘Paper’ or ‘Scissors’.I will
- * use this function in the game to make the computer’s play.
- * @returns: one of the three choices that will return computer choice
- */
 function getComputerChoice() {
     const choices = ["rock", "paper", "scissors"];
-    /* this brings random choice within rock, scissors and paper */
     const randomIndex = Math.floor(Math.random() * choices.length);
     return choices[randomIndex];
 }
 
-/**
- * playRound - a function that plays a single round of rock scissors
- * @playerSelection: parameter that rep the player
- * @computerSelection: parameter that represent player selection
- * @returns: returns the winner either the player or the computer
- */
 function playRound(playerSelection, computerSelection) {
-    
     if (playerSelection === computerSelection) {
-        return `It's a tie, you choose ${playerSelection} and computer choose ${computerSelection}`
-    } else if (playerSelection === 'rock' && computerSelection === 'scissors') {
-        return `You Win! you choose ${playerSelection} and computer choose ${computerSelection}`
-    } else if (playerSelection === 'scissors' && computerSelection === 'paper') {
-        return `You Win! you choose ${playerSelection} and computer choose ${computerSelection}`
-    } else if (playerSelection === 'paper' && computerSelection === 'rock') {
-        return `You Win! you choose ${playerSelection} and computer choose ${computerSelection}`
-    } else if (playerSelection === 'scissors' && computerSelection === 'rock') {
-        return `You lost! computer choose ${computerSelection} and you choose ${playerSelection}`
-    } else if (playerSelection === 'paper' && computerSelection === 'scissors') {
-        return `You lost! computer choose ${computerSelection} and you choose ${playerSelection}`
-    } else if (playerSelection === 'rock' && computerSelection === 'scissors') {
-        return `You lost! computer choose ${computerSelection} and you choose ${playerSelection}`
+        return 'tie';
+    } else if (
+        (playerSelection === 'rock' && computerSelection === 'scissors') ||
+        (playerSelection === 'scissors' && computerSelection === 'paper') ||
+        (playerSelection === 'paper' && computerSelection === 'rock')
+    ) {
+        return 'player';
+    } else {
+        return 'computer';
     }
 }
-//const playerSelection = "rock";
-//const computerSelection = getComputerChoice();
-//console.log(playRound(playerSelection, computerSelection));
 
+function updateScoreDisplay(playerscore, computerscore) {
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    scoreDisplay.textContent = `Player: ${playerscore} || Computer: ${computerscore}`;
+}
 
-/**
- * game: function called game().I Use the previous function inside
- * of this one to play a best-of-five game
- * that keeps score and reports a winner or loser at the end.
- */
-function game(playerSelection) {
-    let playerscore = 0;
-    let computerscore = 0;
-    
-    while (playerscore < 5 && computerscore < 5) {
-        const computerSelection = getComputerChoice();
-        const result = playRound(playerSelection, computerSelection);
-
-        /* updates the result based on the winner */
-        if (result.includes('Win')) {
-            playerscore++;
-        } else if (result.includes('lost')) {
-            computerscore++;
-        }
-        // updating the dom to display the result and running score
-        const resultDisplay = document.getElementById('resultDisplay');
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        const winnerDisplay = document.getElementById('winnerDisplay');
-
-        resultDisplay.textContent = result;
-        scoreDisplay.textContent = `Player: ${playerscore} || Computer: ${computerscore}`;
+function updateResultDisplay(result, playerSelection, computerSelection) {
+    const resultDisplay = document.getElementById('resultDisplay');
+    if (result === 'tie') {
+        resultDisplay.textContent = `It's a tie, you choose ${playerSelection} and computer choose ${computerSelection}`;
+    } else if (result === 'player') {
+        resultDisplay.textContent = `You Win! you choose ${playerSelection} and computer choose ${computerSelection}`;
+    } else {
+        resultDisplay.textContent = `You lost! computer choose ${computerSelection} and you choose ${playerSelection}`;
     }
-    /* Determine who win the game after round 5*/
+}
+
+let playerscore = 0;
+let computerscore = 0;
+let gameFinished = false;
+
+function game(playerSelection) {
+    if (gameFinished) return;
+
     const winnerDisplay = document.getElementById('winnerDisplay');
-    //if (playerscore === 5) {
-        //winnerDisplay.textContent = "congratulations, you win the game";
-    //} else if (computerscore === 5) {
-        //winnerDisplay.textContent = "Sorry, computer wins!";
-    //} else {
-        //if (playerscore === computerscore && playerscore >= 1 && playerscore <= 4) {
-           // winnerDisplay.textContent = `it's a tie ${playerscore}-${computerscore}`;
-        //} else {
-            //if (playerscore > computerscore) {
-                //winnerDisplay.textContent = `You are leading ${playerscore}-${computerscore}`;
-            //} else {
-                //winnerDisplay.textContent = `Computer is leading ${playerscore}-${computerscore}`;
-            //}
-        //}
-    //}
-//}
+
+    const computerSelection = getComputerChoice();
+    const result = playRound(playerSelection, computerSelection);
+
+    if (result === 'player') {
+        playerscore++;
+    } else if (result === 'computer') {
+        computerscore++;
+    }
+
+    updateResultDisplay(result, playerSelection, computerSelection);
+    updateScoreDisplay(playerscore, computerscore);
+
     if (playerscore === 5 || computerscore === 5) {
+        gameFinished = true;
         if (playerscore === 5) {
             winnerDisplay.textContent = "Congratulations, you win the game!";
         } else {
             winnerDisplay.textContent = "Sorry, computer wins!";
         }
-        // Reset scores
-        playerscore = 0;
-        computerscore = 0;
-        // Update DOM to display reset scores
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        scoreDisplay.textContent = `Player: ${playerscore} || Computer: ${computerscore}`;
     }
 }
 
+function resetGame() {
+    playerscore = 0;
+    computerscore = 0;
+    gameFinished = false;
+
+    const winnerDisplay = document.getElementById('winnerDisplay');
+    winnerDisplay.textContent = '';
+
+    updateScoreDisplay (playerscore, computerscore);
+    const resultDisplay = document.getElementById('resultDisplay');
+    resultDisplay.textContent = '';
+}
+// when you click the restart button it will triger the reset game function
+document.getElementById('restartButton').addEventListener('click', function() {
+    resetGame();
+});
+
+// when you click the rock paper or scissors, it will trigger the game function
 document.getElementById('rockButton').addEventListener('click', function() {
     game('rock');
 });
@@ -109,8 +91,6 @@ document.getElementById('paperButton').addEventListener('click', function() {
     game('paper');
 });
 
-document.getElementById('scissorsButtton').addEventListener('click', function() {
+document.getElementById('scissorsButton').addEventListener('click', function() {
     game('scissors');
 });
-
-game();
